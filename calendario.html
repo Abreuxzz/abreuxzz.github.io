@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EFG NEWS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #00aaff, #00ff77);
+            margin: 0;
+            padding: 0;
+            color: #333;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .calendar {
+            width: 90%;
+            margin: auto;
+            border-collapse: collapse;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .calendar th {
+            background-color: #004d00;
+            color: white;
+            padding: 10px;
+        }
+
+        .calendar td {
+            border: 1px solid #ccc;
+            height: 80px;
+            width: 80px; /* Tamanho fixo para quadrados */
+            text-align: center;
+            vertical-align: top;
+            position: relative;
+        }
+
+        .holiday {
+            background-color: #ffcc00;
+            cursor: pointer;
+        }
+
+        .holiday:hover {
+            background-color: #ffbb00;
+        }
+
+        .note {
+            display: none;
+            margin-top: 5px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ccc;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
+        .note textarea {
+            width: 100%;
+            height: 40px; /* Menor altura para evitar sobreposição */
+            margin: 0;
+            resize: none; /* Desabilita o redimensionamento */
+            border: none; /* Remove a borda do textarea */
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background-color: #004d00;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #003300;
+        }
+
+        .holiday-name {
+            font-size: 12px;
+            color: #ff3300;
+        }
+
+        .marked {
+            background-color: #cceeff; /* Cor de fundo quando marcado */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Calendário 2024</h1>
+    <div class="btn-container">
+        <button class="btn" id="prevMonth">Mês Anterior</button>
+        <button class="btn" id="nextMonth">Próximo Mês</button>
+    </div>
+    <table class="calendar" id="calendar"></table>
+
+    <script>
+        const holidays = {
+            '01-01': 'Confraternização Universal',
+            '20-01': 'Aniversário de Valparaíso de Goiás',
+            '02-02': 'Iemanjá',
+            '20-02': 'Carnaval',
+            '21-02': 'Carnaval',
+            '07-04': 'Domingo de Páscoa',
+            '21-04': 'Tiradentes',
+            '01-05': 'Dia do Trabalho',
+            '08-06': 'Corpus Christi',
+            '07-09': 'Independência do Brasil',
+            '12-10': 'Nossa Senhora Aparecida',
+            '02-11': 'Finados',
+            '15-11': 'Proclamação da República',
+            '25-12': 'Natal',
+        };
+
+        const calendar = document.getElementById('calendar');
+        const currentDate = new Date();
+        let month = currentDate.getMonth();
+        let year = currentDate.getFullYear();
+        let notes = {};
+
+        function renderCalendar() {
+            calendar.innerHTML = '';
+
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+
+            const header = document.createElement('tr');
+            header.innerHTML = `<th colspan="7">${firstDay.toLocaleString('pt-BR', { month: 'long' })} ${year}</th>`;
+            calendar.appendChild(header);
+
+            const daysRow = document.createElement('tr');
+            const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
+            daysOfWeek.forEach(day => {
+                const th = document.createElement('th');
+                th.textContent = day;
+                daysRow.appendChild(th);
+            });
+            calendar.appendChild(daysRow);
+
+            let date = 1;
+            for (let i = 0; i < 6; i++) {
+                const row = document.createElement('tr');
+                for (let j = 0; j < 7; j++) {
+                    if (i === 0 && j < firstDay.getDay() || date > daysInMonth) {
+                        row.appendChild(document.createElement('td')); // Célula vazia
+                    } else {
+                        const cell = document.createElement('td');
+                        const formattedDate = `${String(date).padStart(2, '0')}-${String(month + 1).padStart(2, '0')}`;
+
+                        cell.textContent = date;
+
+                        if (holidays[formattedDate]) {
+                            cell.classList.add('holiday');
+                            const holidayName = document.createElement('div');
+                            holidayName.classList.add('holiday-name');
+                            holidayName.textContent = holidays[formattedDate];
+                            cell.appendChild(holidayName);
+                        }
+
+                        const note = document.createElement('div');
+                        note.classList.add('note');
+
+                        const textarea = document.createElement('textarea');
+                        textarea.placeholder = 'Escreva sua anotação aqui...';
+                        textarea.value = notes[formattedDate] || '';
+                        note.appendChild(textarea);
+                        cell.appendChild(note);
+
+                        cell.addEventListener('click', () => {
+                            note.style.display = 'block';
+                            textarea.focus(); // Foca no campo de texto
+                        });
+
+                        // Adiciona evento de pressionar Enter
+                        textarea.addEventListener('keydown', (event) => {
+                            if (event.key === 'Enter') {
+                                event.preventDefault(); // Impede o comportamento padrão de nova linha
+                                notes[formattedDate] = textarea.value; // Salva a nota
+                                cell.classList.add('marked'); // Marca a célula
+                                note.style.display = 'none'; // Oculta o campo de nota
+                                textarea.blur(); // Remove o foco do textarea
+
+                                // Mantém o dia na célula e atualiza a nota
+                                cell.innerHTML = `${date} <br> ${notes[formattedDate]}`; // Mantém o número do dia e atualiza a nota
+                            }
+                        });
+
+                        row.appendChild(cell);
+                        date++;
+                    }
+                }
+                calendar.appendChild(row);
+            }
+        }
+
+        document.getElementById('prevMonth').addEventListener('click', () => {
+            month--;
+            if (month < 0) {
+                month = 11;
+                year--;
+            }
+            renderCalendar();
+        });
+
+        document.getElementById('nextMonth').addEventListener('click', () => {
+            month++;
+            if (month > 11) {
+                month = 0;
+                year++;
+            }
+            renderCalendar();
+        });
+
+        // Renderiza o calendário inicial
+        renderCalendar();
+    </script>
+</body>
+</html>

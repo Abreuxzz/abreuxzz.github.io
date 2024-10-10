@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coluna Lateral com Botões</title>
+    <style>
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            height: 100vh; /* Altura total da janela */
+        }
+        .coluna-esquerda {
+            width: 25%; /* Largura da coluna esquerda */
+            background-color: #f4f4f4;
+            padding: 10px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .conteudo {
+            width: 75%; /* Largura do conteúdo principal */
+            padding: 10px;
+        }
+        button {
+            width: 100%; /* Botões ocupam toda a largura da coluna */
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3; /* Cor ao passar o mouse */
+        }
+    </style>
+</head>
+<body>
+    <div class="coluna-esquerda">
+        <h2>Menu</h2>
+        <button>Botão 1</button>
+        <button>Botão 2</button>
+        <button>Botão 3</button>
+        <button>Botão 4</button>
+    </div>
+    <div class="conteudo">
+        <h1>Conteúdo Principal</h1>
+        <p>Este é o conteúdo principal da página.</p>
+    </div>
+</body>
+</html>

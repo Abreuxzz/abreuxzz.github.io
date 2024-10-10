@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EFG NEWS</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(#00ff88, #00aaff);
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .column button {
+            width: 150px;
+            padding: 15px;
+            margin: 10px 0;
+            font-size: 1.5rem;
+            color: #ffffff;
+            background-color: transparent; /* Fundo transparente */
+            border: none; /* Sem borda */
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .column button:hover {
+            transform: scale(1.1); /* Efeito de zoom ao passar o mouse */
+        }
+
+        .column button:active {
+            transform: scale(1); /* Volta ao tamanho original ao clicar */
+        }
+
+        .schedule {
+            display: none; /* Esconder inicialmente */
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .schedule table {
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .schedule th, .schedule td {
+            border: 1px solid #ffffff; /* Bordas brancas */
+            padding: 10px;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Container inicial com botões das turmas -->
+    <div class="column" id="turmas">
+        <button onclick="selectClass('1A')">1°A</button>
+        <button onclick="selectClass('1B')">1°B</button>
+        <button onclick="selectClass('1C')">1°C</button>
+        <button onclick="selectClass('2A')">2°A</button>
+        <button onclick="selectClass('3A')">3°A</button>
+    </div>
+
+    <!-- Container oculto que mostrará os dias da semana -->
+    <div class="column" id="dias" style="display: none;">
+        <button onclick="showSchedule('segunda')">Segunda-feira</button>
+        <button onclick="showSchedule('terca')">Terça-feira</button>
+        <button onclick="showSchedule('quarta')">Quarta-feira</button>
+        <button onclick="showSchedule('quinta')">Quinta-feira</button>
+        <button onclick="showSchedule('sexta')">Sexta-feira</button>
+    </div>
+
+    <!-- Container para exibir os horários -->
+    <div class="schedule" id="schedule">
+        <h2 id="scheduleTitle"></h2>
+        <table id="scheduleTable"></table>
+    </div>
+
+    <script>
+        let selectedClass = '';
+
+        // Função para selecionar a turma
+        function selectClass(className) {
+            selectedClass = className;
+            // Esconde os botões de turmas
+            document.getElementById('turmas').style.display = 'none';
+            // Mostra os botões dos dias da semana
+            document.getElementById('dias').style.display = 'flex';
+        }
+
+        // Função para mostrar o cronograma
+        function showSchedule(day) {
+            const scheduleTitle = document.getElementById('scheduleTitle');
+            const scheduleTable = document.getElementById('scheduleTable');
+            scheduleTable.innerHTML = ''; // Limpar tabela anterior
+
+            if (selectedClass === '1A') {
+                // Mudar o título e a tabela com base no dia
+                if (day === 'segunda') {
+                    scheduleTitle.innerText = 'Horários da 1°A - Segunda-feira';
+                    scheduleTable.innerHTML = `
+                        <tr><th>Horário</th></tr>
+                        <tr><td>04 - Avaliação</td></tr>
+                        <tr><td>04 - Avaliação</td></tr>
+                        <tr><td>08 - E.O Matemática</td></tr>
+                        <tr><td>08 - E.O Matemática</td></tr>
+                        <tr><td>05 - Biologia</td></tr>
+                        <tr><td>06 - Português</td></tr>
+                        <tr><td>04 - Matemática</td></tr>
+                        <tr><td>04 - Matemática</td></tr>
+                        <tr><td>05 - Biologia</td></tr>
+                    `;
+                } else if (day === 'terca') {
+                    scheduleTitle.innerText = 'Horários da 1°A - Terça-feira';
+                    scheduleTable.innerHTML = `
+                        <tr><th>Horário</th></tr>
+                        <tr><td>08 - Física</td></tr>
+                        <tr><td>04 - Matemática</td></tr>
+                        <tr><td>04 - Matemática</td></tr>
+                        <tr><td>E-Sports - Projeto Integrador</td></tr>
+                        <tr><td>Lab Info - Front End</td></tr>
+                        <tr><td>Lab Info - Front End</td></tr>
+                        <tr><td>05 - Química</td></tr>
+                        <tr><td>06 - Português</td></tr>
+                        <tr><td>06 - Português</td></tr>
+                    `;
+                } else if (day === 'quarta') {
+                    scheduleTitle.innerText = 'Horários da 1°A - Quarta-feira';
+                    scheduleTable.innerHTML = `
+                        <tr><th>Horário</th></tr>
+                        <tr><td>06 - Português</td></tr>
+                        <tr><td>Lab Info - Front End</td></tr>
+                        <tr><td>Lab Info - Front End</td></tr>
+                        <tr><td>04 - Arte</td></tr>
+                        <tr><td>08 - Práticas Profissionais</td></tr>
+                        <tr><td>PJ</td></tr>
+                        <tr><td>PJ</td></tr>
+                        <tr><td>06 - Inglês</td></tr>
+                        <tr><td>06 - Inglês</td></tr>
+                    `;
+                } else if (day === 'quinta') {
+                    scheduleTitle.innerText = 'Horários da 1°A - Quinta-feira';
+                    scheduleTable.innerHTML = `
+                        <tr><th>Horário</th></tr>
+                        <tr><td>05 - Geografia</td></tr>
+                        <tr><td>05 - Geografia</td></tr>
+                        <tr><td>08 - Filosofia</td></tr>
+                        <tr><td>07 - Práticas Profissionais</td></tr>
+                        <tr><td>Lab Info - Front End</td></tr>
+                        <tr><td>Lab Info - Front End</td></tr>
+                        <tr><td>04 - Sociologia</td></tr>
+                        <tr><td>05 - História</td></tr>
+                        <tr><td>05 - História</td></tr>
+                    `;
+                } else if (day === 'sexta') {
+                    scheduleTitle.innerText = 'Horários da 1°A - Sexta-feira';
+                    scheduleTable.innerHTML = `
+                        <tr><th>Horário</th></tr>
+                        <tr><td>07 - Química</td></tr>
+                        <tr><td>02 - Projeto Vida</td></tr>
+                        <tr><td>02 - Projeto Vida</td></tr>
+                        <tr><td>E-Sports - TEC, LOG E SOC</td></tr>
+                        <tr><td>05 - E.O Português</td></tr>
+                        <tr><td>Lab Info - Front End</td></tr>
+                        <tr><td>Lab Info - UX e UI</td></tr>
+                        <tr><td>05 - E.O Português</td></tr>
+                        <tr><td>08 - Educação Física</td></tr>
+                    `;
+                }
+            } else if (selectedClass === '1B') {
+                // Mudar o título e a tabela para a turma 1B
+                if (day === 'segunda') {
+                    scheduleTitle.innerText = 'Horários da 1°B - Segunda-feira';
+                    scheduleTable.innerHTML = `
+                        <tr><th>Horário</th></tr>
+                        <tr><td>05 - Avaliação</td></tr>
+                        <tr><td>05 - Avaliação</td></tr>
+                        <tr><td>05 - Biologia</td></tr>
+                        <tr><td>04 - Matemática</td></tr>
+                        <tr><td>04 - Matemática</td></tr>
+                        <tr><td>07 - Geografia</td></tr>
+                        <tr><td>07 - Geografia</td></tr>
+                    `;
+                } else if (day === 'terca') {
+                    scheduleTitle.innerText = 'Horários da 1°B - Terça-feira';
+                    scheduleTable.innerHTML = `
+                        <tr><th>Horário</th></tr>
+                        <tr><td>Matemática</td></tr>
+                        <tr><td>05 - Química</td></tr>
+                        <tr><td>05 - Química</td></tr>
+                        <tr><td>04 - Matemática</td></tr>
+                        <tr><td>E-Sports - Projeto Integrador</td></tr>
+                        <tr><td>Lab Info - Ux e UI</td></tr>
+                        <tr><td>Lab Info - Front End</td></tr>
+                        <tr><td>06 - Português</td></tr>
+                        <tr><td>Lab Info - Front End</td></tr>
+                    `;
+                } else if (day === 'quarta') {
+                    scheduleTitle.innerText = 'Horários da 1°B - Quarta-feira';
+                    scheduleTable.innerHTML = `
+                        <tr><th>Horário</th></tr>
+                        <tr><td>05 - E.O Português</td></tr>
+                        <tr><td>04 - Arte</td></tr>
+                        <tr><td>08 - Práticas Profissionais</td></tr>
+                        <tr><td>02 - Projeto de Vida</td></tr>
+                        <tr><td>02 - Projeto de Vida</td></tr>
+                        <tr><td>PJ</td></tr>
+                        <tr><td>PJ</td></tr>
+                        <tr><td>Lab Info - Front End</td></tr>
+                        <tr><td>E.O Português</td></tr>
+                    `;
+                } else if (day === 'quinta') {
+                    scheduleTitle.innerText = 'Horários da 1°B - Quinta-feira';
+                    scheduleTable.innerHTML = `
+                        <tr><th>Horário</th></tr>
+                        <tr><td>06 - Português</td></tr>
+                        <tr><td>Lab Info - E-Sports - TEC, LOG e SOC</td></tr>
+                        <tr><td>05 - História</td></tr>
+                        <tr><td>Lab Info - Front End</td></tr>
+                        <tr><td>06 - Inglês</td></tr>
+                        <tr><td>05 - História</td></tr>
+                        <tr><td>Lab Info - Front End</td></tr>
+                        <tr><td>08 - Filosofia</td></tr>
+                        <tr><td>06 - Inglês</td></tr>
+                    `;
+                } else if (day === 'sexta') {
+                    scheduleTitle.innerText = 'Horários da 1°B - Sexta-feira';
+                    scheduleTable.innerHTML = `
+                        <tr><th>Horário</th></tr>
+                        <tr><td>04 - Sociologia</td></tr>
+                        <tr><td>05 - Práticas Profissionais</td></tr>
+                        <tr><td>06 - Português</td></tr>
+                        <tr><td>06 - Português</td></tr>
+                        <tr><td>07 - E.O Matemática</td></tr>
+                        <tr><td>07 - E.O. Matemática</td></tr>
+                        <tr><td>08 - Educação Física</td></tr>
+                        <tr><td>Lab Info - Front End</td></tr>
+                        <tr><td>Lab Info - Front End</td></tr>
+                    `;
+                }
+            }
+
+            // Esconde os botões dos dias
+            document.getElementById('dias').style.display = 'none';
+            // Mostra a tabela de horários
+            document.getElementById('schedule').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
